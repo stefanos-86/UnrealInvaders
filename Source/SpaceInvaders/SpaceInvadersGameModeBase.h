@@ -14,4 +14,8 @@ class SPACEINVADERS_API ASpaceInvadersGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	ASpaceInvadersGameModeBase();
+	int16 points;
+	int8 lives;
 };

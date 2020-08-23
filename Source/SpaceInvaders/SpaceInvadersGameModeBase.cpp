@@ -3,3 +3,11 @@
 
 #include "SpaceInvadersGameModeBase.h"
 
+#include "Spaceship.h"
+
+ASpaceInvadersGameModeBase::ASpaceInvadersGameModeBase() :
+	points(0),
+	lives(3)
+{
+	DefaultPawnClass = ASpaceship::StaticClass();
+}

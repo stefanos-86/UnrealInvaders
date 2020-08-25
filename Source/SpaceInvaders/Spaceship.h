@@ -21,6 +21,9 @@ private:
 	UPROPERTY()
 	UStaticMeshComponent* SpaceshipMesh;
 
+	float LastShotTime;
+
 	void LoadMesh(const TCHAR* path);
 	void Move(float AxisValue);
+	void Shoot();
 };

@@ -4,6 +4,8 @@
 #include "ConstructorHelpers.h"
 #include "Math/UnrealMathUtility.h"
 
+#include "LaserBullet.h"
+
 ASpaceship::ASpaceship()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -11,10 +13,10 @@ ASpaceship::ASpaceship()
 	RootComponent = SpaceshipMesh;
 }
 
-// Called when the game starts or when spawned
 void ASpaceship::BeginPlay()
 {
 	Super::BeginPlay();
+	LastShotTime = GetWorld()->GetTimeSeconds();
 }
 
 void ASpaceship::LoadMesh(const TCHAR* path)
@@ -46,11 +48,27 @@ void ASpaceship::Move(float AxisValue)
 	SetActorLocation(Location);
 }
 
+void ASpaceship::Shoot()
+{
+	const float CooldownTime = 0.5;  // 2 shots per second.
+
+	const float CurrentTime = GetWorld()->GetTimeSeconds();
+	if (CurrentTime > LastShotTime + CooldownTime)
+	{
+		// Rotation does not really count here. Bullet is a sphere, movement is fixed.
+		GetWorld()->SpawnActor<ALaserBullet>(GetActorLocation(), GetActorRotation());
+		LastShotTime = CurrentTime;
+	}
+}
+
 // Called to bind functionality to input
 void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("Move", this, &ASpaceship::Move);
-}
 
+	// TODO: find a way to have continous fire without using the tick (e. g. timed callback
+	// every 0.5 seconds). Drumming on the left mouse button is uncomfortable.
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &ASpaceship::Shoot);
+}

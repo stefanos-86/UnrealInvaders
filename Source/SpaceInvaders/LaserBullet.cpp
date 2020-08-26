@@ -9,7 +9,9 @@ ALaserBullet::ALaserBullet()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	// TODO: copy-pasta with the spaceship load!
+	// TODO: copy-pasta with the spaceship load! But where can I put a common method?
+	// It can't be in an helper or in a static, because I want a default sup object of "this".
+	// Use multiple inheritance? A common base class (but I have a pawn and an actor...)?
 	Beam = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	checkf(Beam != nullptr, TEXT("Bullet mesh not created."));
 
@@ -17,6 +19,7 @@ ALaserBullet::ALaserBullet()
 	checkf(MeshPath.Object != nullptr, TEXT("Bullet mesh not found."));
 
 	Beam->SetStaticMesh(MeshPath.Object);
+	RootComponent = Beam;
 }
 
 void ALaserBullet::BeginPlay()
@@ -34,7 +37,8 @@ void ALaserBullet::Tick(float DeltaTime)
 	Location.Z -= Movement;  // Very specialized movement: bullets only go "down" towards the UFOs.
 	SetActorLocation(Location);
 
-	const float MaximumRange = -1000; // TODO: set a real value
-	// TODO: destroy when past max range. If location.Z < ...
+	const float MaximumRange = -2500; // This is where the starfield originates.
+	if (Location.Z < MaximumRange)
+		Destroy();
 }
 

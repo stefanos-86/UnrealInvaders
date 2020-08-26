@@ -3,17 +3,20 @@
 
 #include "LaserBullet.h"
 
+#include "ConstructorHelpers.h"
+
 ALaserBullet::ALaserBullet() 
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("ColliderForBullet"));
-	checkf(Collider != nullptr, TEXT("Collision mesh for bullet not created."));
+	// TODO: copy-pasta with the spaceship load!
+	Beam = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
+	checkf(Beam != nullptr, TEXT("Bullet mesh not created."));
 
-	// Shpere is INVISIBLE: use show Collision in console until a visible mesh is available.
+	ConstructorHelpers::FObjectFinder<UStaticMesh> MeshPath(TEXT("/Game/Spaceships/Beam.Beam"));
+	checkf(MeshPath.Object != nullptr, TEXT("Bullet mesh not found."));
 
-	Collider->InitSphereRadius(15.0f);
-	RootComponent = Collider;
+	Beam->SetStaticMesh(MeshPath.Object);
 }
 
 void ALaserBullet::BeginPlay()
@@ -25,7 +28,7 @@ void ALaserBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	const float Speed = 1000;
+	const float Speed = 1500;
 	const float Movement = Speed * DeltaTime;
 	FVector Location = GetActorLocation();
 	Location.Z -= Movement;  // Very specialized movement: bullets only go "down" towards the UFOs.

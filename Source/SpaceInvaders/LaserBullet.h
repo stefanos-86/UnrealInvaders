@@ -20,7 +20,7 @@ protected:
 	virtual void BeginPlay() final;
 
 	UPROPERTY()
-	USphereComponent* Collider;
+	UStaticMeshComponent* Beam;
 
 };
 

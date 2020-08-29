@@ -6,8 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "Components/SphereComponent.h"
 
-#include "MeshLoaderComponent.h"
-
 #include "LaserBullet.generated.h"
 
 UCLASS()

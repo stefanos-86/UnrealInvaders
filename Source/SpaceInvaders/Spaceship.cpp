@@ -38,10 +38,9 @@ void ASpaceship::Shoot()
 {
 	const float CooldownTime = 0.5;  // 2 shots per second.
 
-	const float CurrentTime = GetWorld()->GetTimeSeconds();
+	const float CurrentTime = GetWorld()->GetTimeSeconds();  // Could use a timer, but is it thread safe?
 	if (CurrentTime > LastShotTime + CooldownTime)
 	{
-		// Rotation does not really count here. Bullet is a sphere, movement is fixed.
 		GetWorld()->SpawnActor<ALaserBullet>(GetActorLocation(), GetActorRotation());
 		LastShotTime = CurrentTime;
 	}

@@ -13,15 +13,5 @@ class SPACEINVADERS_API AUfo : public AActor
 	
 public:	
 	AUfo();
-
-protected:
-	virtual void BeginPlay() override;
-
-public:	
-	virtual void Tick(float DeltaTime) override;
-
-private:
-	UPROPERTY()
-	UStaticMeshComponent* UfoMesh;
-
+	virtual void Tick(float DeltaTime) final;
 };

@@ -3,26 +3,12 @@
 
 #include "Ufo.h"
 
-#include "Components/StaticMeshComponent.h"
-#include "ConstructorHelpers.h"
+#include "MeshLoader.h"
 
 AUfo::AUfo()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	UfoMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
-	checkf(UfoMesh != nullptr, TEXT("Spaceship mesh not created."));
-
-	ConstructorHelpers::FObjectFinder<UStaticMesh> MeshPath(TEXT("/Game/Spaceships/UFO.UFO"));
-	checkf(MeshPath.Object != nullptr, TEXT("Spaceship mesh not found."));
-
-	UfoMesh->SetStaticMesh(MeshPath.Object);
-}
-
-void AUfo::BeginPlay()
-{
-	Super::BeginPlay();
-	
+	RootComponent = MeshLoader::LoadMesh(TEXT("/Game/Spaceships/UFO.UFO"), this);
 }
 
 void AUfo::Tick(float DeltaTime)

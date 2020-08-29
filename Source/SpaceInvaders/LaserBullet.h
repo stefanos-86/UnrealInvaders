@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/SphereComponent.h"
+
+#include "MeshLoaderComponent.h"
+
 #include "LaserBullet.generated.h"
 
 UCLASS()
@@ -15,13 +18,6 @@ class SPACEINVADERS_API ALaserBullet : public AActor
 public:	
 	ALaserBullet();
 	virtual void Tick(float DeltaTime) final;
-
-protected:
-	virtual void BeginPlay() final;
-
-	UPROPERTY()
-	UStaticMeshComponent* Beam;
-
 };
 
 /* Until someone can answer the "what's the best way to make a bullet" question

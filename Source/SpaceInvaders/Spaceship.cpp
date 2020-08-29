@@ -1,33 +1,19 @@
 #include "Spaceship.h"
-
-#include "Components/StaticMeshComponent.h"
-#include "ConstructorHelpers.h"
 #include "Math/UnrealMathUtility.h"
 
 #include "LaserBullet.h"
+#include "MeshLoader.h"
 
 ASpaceship::ASpaceship()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	LoadMesh(TEXT("/Game/Spaceships/Spaceship.Spaceship"));
-	RootComponent = SpaceshipMesh;
+	RootComponent = MeshLoader::LoadMesh(TEXT("/Game/Spaceships/Spaceship.Spaceship"), this);
 }
 
 void ASpaceship::BeginPlay()
 {
 	Super::BeginPlay();
 	LastShotTime = GetWorld()->GetTimeSeconds();
-}
-
-void ASpaceship::LoadMesh(const TCHAR* path)  // TODO There are at least 3 copies of this code. Refactor!
-{
-	SpaceshipMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
-	checkf(SpaceshipMesh != nullptr, TEXT("Spaceship mesh not created."));
-
-	ConstructorHelpers::FObjectFinder<UStaticMesh> MeshPath(path);
-	checkf(MeshPath.Object != nullptr, TEXT("Spaceship mesh not found."));
-
-	SpaceshipMesh->SetStaticMesh(MeshPath.Object);
 }
 
 void ASpaceship::Move(float AxisValue)

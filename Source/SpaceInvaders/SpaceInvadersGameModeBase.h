@@ -16,6 +16,4 @@ class SPACEINVADERS_API ASpaceInvadersGameModeBase : public AGameModeBase
 	
 public:
 	ASpaceInvadersGameModeBase();
-	int16 points;
-	int8 lives;
 };

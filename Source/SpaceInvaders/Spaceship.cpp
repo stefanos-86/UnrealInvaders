@@ -19,7 +19,7 @@ void ASpaceship::BeginPlay()
 	LastShotTime = GetWorld()->GetTimeSeconds();
 }
 
-void ASpaceship::LoadMesh(const TCHAR* path)
+void ASpaceship::LoadMesh(const TCHAR* path)  // TODO There are at least 3 copies of this code. Refactor!
 {
 	SpaceshipMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	checkf(SpaceshipMesh != nullptr, TEXT("Spaceship mesh not created."));

@@ -3,6 +3,9 @@
 
 #include "AlienFleet.h"
 
+#include "Math/UnrealMathUtility.h"
+
+#include "Constants.h"
 #include "Ufo.h"
 
 AAlienFleet::AAlienFleet()
@@ -26,12 +29,17 @@ void AAlienFleet::BeginPlay()
 
 void AAlienFleet::SpawnUfo()
 {
+
+	const float UfoLateralPosition = FMath::FRandRange(-BattlefieldHalfWidth, BattlefieldHalfWidth);
+
+	// Assume that the UFOs go away fast enough to avoid overlaps. This may change in the future.
+	
+	const FVector UfoStartPosition(0, UfoLateralPosition, BattlefieldFarlimit);
+
 	// Constant rotation: who cares, the UFO is round...
 	const FRotator NoRotation(0, 0, 0);
 
-	// TODO write the algo to have the locations.
-
-	GetWorld()->SpawnActor<AUfo>(FVector(0, 0, -800), NoRotation);
+	GetWorld()->SpawnActor<AUfo>(UfoStartPosition, NoRotation);
 }
 
 

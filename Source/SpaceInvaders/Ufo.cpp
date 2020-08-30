@@ -3,6 +3,7 @@
 
 #include "Ufo.h"
 
+#include "Constants.h"
 #include "MeshLoader.h"
 
 AUfo::AUfo()
@@ -23,8 +24,7 @@ void AUfo::Tick(float DeltaTime)
 	Location.Z += Movement;
 	SetActorLocation(Location);
 
-	const float MaximumRange = +300;
-	if (Location.Z > MaximumRange)
+	if (Location.Z > BattlefieldNearlimit)
 		Destroy();
 		// TODO: score points for the UFOs.
 

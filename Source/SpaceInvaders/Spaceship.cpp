@@ -1,6 +1,7 @@
 #include "Spaceship.h"
 #include "Math/UnrealMathUtility.h"
 
+#include "Constants.h"
 #include "LaserBullet.h"
 #include "MeshLoader.h"
 
@@ -20,15 +21,10 @@ void ASpaceship::Move(float AxisValue)
 {
 	const float Speed = 5;  // TODO: made configurable so that user can "adapt" to own mouse.
 
-	// The camera is positioned as to allow this much space of movement.
-	// It should be possible to understand the limit of the frame with some math related
-	// to the camera position, rotation and FOV, but that is overkill.
-	const float MaxMovementExtent = 800;
-
 	const float Movement = Speed * AxisValue;
 
 	FVector Location = GetActorLocation();
-	const float NewYLocation = FMath::Clamp(Location.Y + Movement, -MaxMovementExtent, MaxMovementExtent);
+	const float NewYLocation = FMath::Clamp(Location.Y + Movement, -BattlefieldHalfWidth, BattlefieldHalfWidth);
 
 	Location.Y = NewYLocation;
 	SetActorLocation(Location);

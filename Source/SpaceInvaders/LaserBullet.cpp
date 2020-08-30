@@ -3,6 +3,7 @@
 
 #include "LaserBullet.h"
 
+#include "Constants.h"
 #include "MeshLoader.h"
 
 ALaserBullet::ALaserBullet() 
@@ -22,8 +23,7 @@ void ALaserBullet::Tick(float DeltaTime)
 	Location.Z -= Movement;  
 	SetActorLocation(Location);
 
-	const float MaximumRange = -2500; // This is where the starfield originates.
-	if (Location.Z < MaximumRange)
+	if (Location.Z < BattlefieldFarlimit)
 		Destroy();
 }
 

@@ -6,10 +6,21 @@
 #include "Constants.h"
 #include "MeshLoader.h"
 
+#include "Engine/Engine.h"
+
 AUfo::AUfo()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	RootComponent = MeshLoader::LoadMesh(TEXT("/Game/Spaceships/UFO.UFO"), this);
+	Mesh = MeshLoader::LoadMesh(TEXT("/Game/Spaceships/UFO.UFO"), this);
+	RootComponent = Mesh;
+}
+
+void AUfo::BeginPlay()
+{
+	Super::BeginPlay();
+
+	Mesh->BodyInstance.SetCollisionProfileName("OverlapAll");
+	Mesh->OnComponentBeginOverlap.AddDynamic(this, &AUfo::BeginOverlap);
 }
 
 void AUfo::Tick(float DeltaTime)
@@ -32,3 +43,17 @@ void AUfo::Tick(float DeltaTime)
 	// TODO: fire for the UFO.
 }
 
+void AUfo::BeginOverlap(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult) 
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("UFO overlap"));
+	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, TEXT("UFO overlap"));
+
+	Destroy();
+}

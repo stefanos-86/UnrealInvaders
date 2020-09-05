@@ -1,17 +1,16 @@
 #include "Spaceship.h"
 
+#include "Blueprint/UserWidget.h"
 #include "Engine/Engine.h"
 #include "GameFramework/PlayerController.h"
 #include "Math/UnrealMathUtility.h"
 
 #include "Constants.h"
+#include "SpaceInvadersGameModeBase.h"
 #include "LaserBullet.h"
 #include "MeshLoader.h"
 
-
-
-ASpaceship::ASpaceship() :
-	paused(false)
+ASpaceship::ASpaceship()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	Mesh = MeshLoader::LoadMesh(TEXT("/Game/Spaceships/Spaceship.Spaceship"), this);
@@ -22,7 +21,6 @@ void ASpaceship::BeginPlay()
 {
 	Super::BeginPlay();
 	LastShotTime = GetWorld()->GetTimeSeconds();
-	paused = false;
 
 	Mesh->BodyInstance.SetCollisionProfileName("OverlapAll");
 	Mesh->OnComponentBeginOverlap.AddDynamic(this, &ASpaceship::BeginOverlap);
@@ -71,9 +69,22 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 void ASpaceship::Pause()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Pause"));
-	paused = !paused;
+	// Pause() works as a toggle. Call twice, it stops the pause.
 	GEngine->GetFirstLocalPlayerController(GetWorld())->Pause();
+	// TODO: can this stuff ever be nullptr? Kismet has checks...
+
+	const ASpaceInvadersGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASpaceInvadersGameModeBase>();
+	// TODO: pointers can be null and crash if settings are not correct (e. g. default value not set in BP game 
+	// mode or game mode not set in editor project parameters).
+
+	if (GetWorld()->IsPaused())
+	{
+		GameMode->PauseMenu->AddToViewport();  // TODO: find a way to bring this UI rubbish outside the spaceship. Reparent the menu and give it an "open" option?
+	}
+	else
+	{
+		GameMode->PauseMenu->RemoveFromParent();
+	}
 }
 
 

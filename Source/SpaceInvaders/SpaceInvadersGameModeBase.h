@@ -16,4 +16,12 @@ class SPACEINVADERS_API ASpaceInvadersGameModeBase : public AGameModeBase
 	
 public:
 	ASpaceInvadersGameModeBase();
+
+	/** Bridge between C++ and the blueprint menu. Not sure the game mode is the
+	    right place to host the reference. Maybe a singleton somewhere. 
+		This sadly forces the game mode to be a blueprint, but there is no other way
+		unless I add an object in the scene and link the blueprint to it in the editor.
+		But that, you have to do for every map. This, only once in the game mode blueprint.*/
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UUserWidget* PauseMenu;
 };

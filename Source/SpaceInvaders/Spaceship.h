@@ -19,7 +19,6 @@ protected:
 
 private:
 	float LastShotTime;
-	bool paused;
 
 	UPROPERTY()
 	UStaticMeshComponent* Mesh;

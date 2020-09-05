@@ -70,7 +70,8 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 void ASpaceship::Pause()
 {
 	// Pause() works as a toggle. Call twice, it stops the pause.
-	GEngine->GetFirstLocalPlayerController(GetWorld())->Pause();
+	APlayerController* Controller = GEngine->GetFirstLocalPlayerController(GetWorld());
+	Controller->Pause();
 	// TODO: can this stuff ever be nullptr? Kismet has checks...
 
 	const ASpaceInvadersGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASpaceInvadersGameModeBase>();
@@ -80,10 +81,19 @@ void ASpaceship::Pause()
 	if (GetWorld()->IsPaused())
 	{
 		GameMode->PauseMenu->AddToViewport();  // TODO: find a way to bring this UI rubbish outside the spaceship. Reparent the menu and give it an "open" option?
+		//FInputModeUIOnly Mode;
+		FInputModeGameAndUI Mode;  // The UI only mode blocks the keyboard input from getting there. Makes sense, probably have to listen to the input in the UI itself.
+	//	Mode.SetWidgetToFocus(GameMode->PauseMenu->GetCachedWidget());
+		Controller->SetInputMode(Mode);
+		Controller->bShowMouseCursor = true;
 	}
 	else
 	{
 		GameMode->PauseMenu->RemoveFromParent();
+		FInputModeGameOnly GameMode;
+		Controller->SetInputMode(GameMode);
+		//FSlateApplication::Get().SetFocusToGameViewport();
+		Controller->bShowMouseCursor = false;
 	}
 }
 

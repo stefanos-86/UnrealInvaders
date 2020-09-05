@@ -55,5 +55,7 @@ void AUfo::BeginOverlap(
 	UE_LOG(LogTemp, Warning, TEXT("UFO overlap"));
 	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, TEXT("UFO overlap"));
 
+	// TODO: increment points.
+
 	Destroy();
 }

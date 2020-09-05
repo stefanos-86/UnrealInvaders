@@ -19,12 +19,14 @@ protected:
 
 private:
 	float LastShotTime;
+	bool paused;
 
 	UPROPERTY()
 	UStaticMeshComponent* Mesh;
 
 	void Move(float AxisValue);
 	void Shoot();
+	void Pause();
 
 	UFUNCTION()
 		void BeginOverlap(

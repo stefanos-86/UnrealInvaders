@@ -1,13 +1,17 @@
 #include "Spaceship.h"
+
+#include "Engine/Engine.h"
+#include "GameFramework/PlayerController.h"
 #include "Math/UnrealMathUtility.h"
 
 #include "Constants.h"
 #include "LaserBullet.h"
 #include "MeshLoader.h"
 
-#include "Engine/Engine.h"
 
-ASpaceship::ASpaceship()
+
+ASpaceship::ASpaceship() :
+	paused(false)
 {
 	PrimaryActorTick.bCanEverTick = false;
 	Mesh = MeshLoader::LoadMesh(TEXT("/Game/Spaceships/Spaceship.Spaceship"), this);
@@ -18,6 +22,7 @@ void ASpaceship::BeginPlay()
 {
 	Super::BeginPlay();
 	LastShotTime = GetWorld()->GetTimeSeconds();
+	paused = false;
 
 	Mesh->BodyInstance.SetCollisionProfileName("OverlapAll");
 	Mesh->OnComponentBeginOverlap.AddDynamic(this, &ASpaceship::BeginOverlap);
@@ -57,7 +62,20 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	// TODO: find a way to have continous fire without using the tick (e. g. timed callback
 	// every 0.5 seconds). Drumming on the left mouse button is uncomfortable.
 	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &ASpaceship::Shoot);
+
+
+	/* This should not be there, but I could not figure out how to have another class 
+	   taking input at the same time as this. */
+	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &ASpaceship::Pause).bExecuteWhenPaused = true;
 }
+
+void ASpaceship::Pause()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Pause"));
+	paused = !paused;
+	GEngine->GetFirstLocalPlayerController(GetWorld())->Pause();
+}
+
 
 
 void ASpaceship::BeginOverlap(
@@ -71,4 +89,8 @@ void ASpaceship::BeginOverlap(
 
 	UE_LOG(LogTemp, Warning, TEXT("Spaceship overlap"));
 	GEngine->AddOnScreenDebugMessage(1, 1, FColor::Red, TEXT("Spaceship overlap"));
+
+	// TODO: ignore laser hits. 1) Move laser out of collision area; 2) Figure out how to ignore.
+
+	// TODO: decrement life.
 }

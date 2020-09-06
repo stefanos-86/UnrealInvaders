@@ -9,3 +9,4 @@ ASpaceInvadersGameModeBase::ASpaceInvadersGameModeBase()
 {
 	DefaultPawnClass = ASpaceship::StaticClass();
 }
+

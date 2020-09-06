@@ -62,41 +62,25 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &ASpaceship::Shoot);
 
 
-	/* This should not be there, but I could not figure out how to have another class 
+	/* There should not be there, but I could not figure out how to have another class 
 	   taking input at the same time as this. */
 	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &ASpaceship::Pause).bExecuteWhenPaused = true;
+	PlayerInputComponent->BindAction("Quit", IE_Pressed, this, &ASpaceship::Quit).bExecuteWhenPaused = true;
 }
 
 void ASpaceship::Pause()
 {
-	// Pause() works as a toggle. Call twice, it stops the pause.
-	APlayerController* Controller = GEngine->GetFirstLocalPlayerController(GetWorld());
-	Controller->Pause();
-	// TODO: can this stuff ever be nullptr? Kismet has checks...
-
 	const ASpaceInvadersGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASpaceInvadersGameModeBase>();
-	// TODO: pointers can be null and crash if settings are not correct (e. g. default value not set in BP game 
-	// mode or game mode not set in editor project parameters).
-
-	if (GetWorld()->IsPaused())
-	{
-		GameMode->PauseMenu->AddToViewport();  // TODO: find a way to bring this UI rubbish outside the spaceship. Reparent the menu and give it an "open" option?
-		//FInputModeUIOnly Mode;
-		FInputModeGameAndUI Mode;  // The UI only mode blocks the keyboard input from getting there. Makes sense, probably have to listen to the input in the UI itself.
-	//	Mode.SetWidgetToFocus(GameMode->PauseMenu->GetCachedWidget());
-		Controller->SetInputMode(Mode);
-		Controller->bShowMouseCursor = true;
-	}
-	else
-	{
-		GameMode->PauseMenu->RemoveFromParent();
-		FInputModeGameOnly GameMode;
-		Controller->SetInputMode(GameMode);
-		//FSlateApplication::Get().SetFocusToGameViewport();
-		Controller->bShowMouseCursor = false;
-	}
+	APlayerController* PlayerController = GEngine->GetFirstLocalPlayerController(GetWorld());
+	GameMode->PauseMenu->TogglePause(PlayerController);
 }
 
+void ASpaceship::Quit() {
+	// TODO: Duplicated code, both the line that takes the controller and 
+	// the method itself. The Pause menu has another call to quit in blueprint.
+	APlayerController* PlayerController = GEngine->GetFirstLocalPlayerController(GetWorld());
+	PlayerController->ConsoleCommand("Quit"); // The Internet says this is the way. Kismet does a similar thing.
+}
 
 
 void ASpaceship::BeginOverlap(

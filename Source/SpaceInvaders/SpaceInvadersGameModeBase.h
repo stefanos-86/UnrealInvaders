@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+
+#include "PauseMenu.h"
+
 #include "SpaceInvadersGameModeBase.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class SPACEINVADERS_API ASpaceInvadersGameModeBase : public AGameModeBase
 {
@@ -23,5 +23,5 @@ public:
 		unless I add an object in the scene and link the blueprint to it in the editor.
 		But that, you have to do for every map. This, only once in the game mode blueprint.*/
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UUserWidget* PauseMenu;
+	UPauseMenu* PauseMenu;
 };

@@ -26,6 +26,7 @@ private:
 	void Move(float AxisValue);
 	void Shoot();
 	void Pause();
+	void Quit();
 
 	UFUNCTION()
 		void BeginOverlap(

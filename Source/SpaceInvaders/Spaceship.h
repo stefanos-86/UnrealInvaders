@@ -2,6 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+
+#include "SpaceInvadersGameModeBase.h"
+
 #include "Spaceship.generated.h"
 
 UCLASS()
@@ -27,6 +30,9 @@ private:
 	void Shoot();
 	void Pause();
 	void Quit();
+
+	APlayerController* GetController() const;
+	ASpaceInvadersGameModeBase* GetGameMode();  // No const. Calls GetWorld, that is not const.
 
 	UFUNCTION()
 		void BeginOverlap(

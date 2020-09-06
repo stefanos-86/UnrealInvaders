@@ -14,4 +14,7 @@ class SPACEINVADERS_API UPauseMenu : public UUserWidget
 public:
 	UFUNCTION(BlueprintCallable)
 	void TogglePause(APlayerController* Controller);
+
+	UFUNCTION(BlueprintCallable)
+	void Quit(APlayerController* Controller);
 };

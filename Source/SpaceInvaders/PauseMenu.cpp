@@ -27,3 +27,9 @@ void UPauseMenu::TogglePause(APlayerController* Controller)
 		Controller->bShowMouseCursor = false;
 	}
 }
+
+void UPauseMenu::Quit(APlayerController* Controller)
+{
+	// Console command??? The Internet says this is the way. Kismet does a similar thing.
+	Controller->ConsoleCommand("Quit");
+}

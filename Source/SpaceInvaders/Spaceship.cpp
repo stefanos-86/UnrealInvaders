@@ -70,18 +70,22 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 void ASpaceship::Pause()
 {
-	const ASpaceInvadersGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASpaceInvadersGameModeBase>();
-	APlayerController* PlayerController = GEngine->GetFirstLocalPlayerController(GetWorld());
-	GameMode->PauseMenu->TogglePause(PlayerController);
+	GetGameMode()->PauseMenu->TogglePause(GetController());
 }
 
 void ASpaceship::Quit() {
-	// TODO: Duplicated code, both the line that takes the controller and 
-	// the method itself. The Pause menu has another call to quit in blueprint.
-	APlayerController* PlayerController = GEngine->GetFirstLocalPlayerController(GetWorld());
-	PlayerController->ConsoleCommand("Quit"); // The Internet says this is the way. Kismet does a similar thing.
+	GetGameMode()->PauseMenu->Quit(GetController());
 }
 
+APlayerController* ASpaceship::GetController() const
+{
+	return GEngine->GetFirstLocalPlayerController(GetWorld());
+}
+
+ASpaceInvadersGameModeBase* ASpaceship::GetGameMode()
+{
+	return GetWorld()->GetAuthGameMode<ASpaceInvadersGameModeBase>();
+}
 
 void ASpaceship::BeginOverlap(
 	UPrimitiveComponent* OverlappedComponent,

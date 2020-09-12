@@ -67,4 +67,5 @@ void AUfo::BeginOverlap(
 	Destroy();
 
 	// TODO: destroy laser bullet as well.
+
 }

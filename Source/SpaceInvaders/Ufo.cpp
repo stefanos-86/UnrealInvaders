@@ -5,6 +5,8 @@
 
 #include "Constants.h"
 #include "MeshLoader.h"
+#include "SpaceInvadersGameModeBase.h"
+#include "SpaceInvadersHUD.h"
 
 #include "Engine/Engine.h"
 
@@ -38,6 +40,8 @@ void AUfo::Tick(float DeltaTime)
 	if (Location.Z > BattlefieldNearlimit)
 		Destroy();
 		// TODO: score points for the UFOs.
+		// Game mode -> points + 1?
+
 
 
 	// TODO: fire for the UFO.
@@ -55,7 +59,12 @@ void AUfo::BeginOverlap(
 	UE_LOG(LogTemp, Warning, TEXT("UFO overlap"));
 	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, TEXT("UFO overlap"));
 
-	// TODO: increment points.
+	ASpaceInvadersGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASpaceInvadersGameModeBase>();
+	// TODO Use a binding? So far, this is the only place where the score can change...
+	ASpaceInvadersHUD* Hud = Cast<ASpaceInvadersHUD>(GEngine->GetFirstLocalPlayerController(GetWorld())->GetHUD());
+	Hud->UpdateScore(GameMode->ScorePoint());
 
 	Destroy();
+
+	// TODO: destroy laser bullet as well.
 }

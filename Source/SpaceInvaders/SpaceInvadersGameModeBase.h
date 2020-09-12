@@ -24,4 +24,9 @@ public:
 		But that, you have to do for every map. This, only once in the game mode blueprint.*/
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UPauseMenu* PauseMenu;
+
+	uint8 ScorePoint();
+
+private:
+	uint8 points;
 };

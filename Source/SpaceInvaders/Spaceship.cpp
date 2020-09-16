@@ -7,6 +7,7 @@
 
 #include "Constants.h"
 #include "SpaceInvadersGameModeBase.h"
+#include "SpaceInvadersHUD.h"
 #include "LaserBullet.h"
 #include "MeshLoader.h"
 
@@ -99,7 +100,8 @@ void ASpaceship::BeginOverlap(
 	UE_LOG(LogTemp, Warning, TEXT("Spaceship overlap"));
 	GEngine->AddOnScreenDebugMessage(1, 1, FColor::Red, TEXT("Spaceship overlap"));
 
-	// TODO: ignore laser hits. 1) Move laser out of collision area; 2) Figure out how to ignore.
+	// TODO: ignore laser hits. 1) Move laser out of collision area (...slots?); 2) Figure out how to ignore.
 
-	// TODO: decrement life.
+	ASpaceInvadersHUD* Hud = Cast<ASpaceInvadersHUD>(GEngine->GetFirstLocalPlayerController(GetWorld())->GetHUD());
+	Hud->UpdateLives(GetGameMode()->LoseLife());
 }

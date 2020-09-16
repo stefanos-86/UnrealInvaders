@@ -20,4 +20,6 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateScore(const uint8 Points);
 	
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateLives(const uint8 Lives);
 };

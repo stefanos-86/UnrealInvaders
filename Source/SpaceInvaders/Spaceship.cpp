@@ -47,7 +47,8 @@ void ASpaceship::Shoot()
 	const float CurrentTime = GetWorld()->GetTimeSeconds();  // Could use a timer, but is it thread safe?
 	if (CurrentTime > LastShotTime + CooldownTime)
 	{
-		GetWorld()->SpawnActor<ALaserBullet>(GetActorLocation(), GetActorRotation());
+		const FVector LaserStartLocation = Mesh->GetSocketLocation("LaserStartPoint");
+		GetWorld()->SpawnActor<ALaserBullet>(LaserStartLocation, GetActorRotation());
 		LastShotTime = CurrentTime;
 	}
 }
@@ -99,8 +100,6 @@ void ASpaceship::BeginOverlap(
 
 	UE_LOG(LogTemp, Warning, TEXT("Spaceship overlap"));
 	GEngine->AddOnScreenDebugMessage(1, 1, FColor::Red, TEXT("Spaceship overlap"));
-
-	// TODO: ignore laser hits. 1) Move laser out of collision area (...slots?); 2) Figure out how to ignore.
 
 	ASpaceInvadersHUD* Hud = Cast<ASpaceInvadersHUD>(GEngine->GetFirstLocalPlayerController(GetWorld())->GetHUD());
 	Hud->UpdateLives(GetGameMode()->LoseLife());

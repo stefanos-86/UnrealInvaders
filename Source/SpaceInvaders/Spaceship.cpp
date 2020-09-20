@@ -1,9 +1,13 @@
 #include "Spaceship.h"
 
 #include "Blueprint/UserWidget.h"
+#include "ConstructorHelpers.h"
 #include "Engine/Engine.h"
 #include "GameFramework/PlayerController.h"
 #include "Math/UnrealMathUtility.h"
+#include "Sound/SoundBase.h"
+
+#include "Kismet/GameplayStatics.h"
 
 #include "Constants.h"
 #include "SpaceInvadersGameModeBase.h"
@@ -16,6 +20,19 @@ ASpaceship::ASpaceship()
 	PrimaryActorTick.bCanEverTick = false;
 	Mesh = MeshLoader::LoadMesh(TEXT("/Game/Spaceships/Spaceship.Spaceship"), this);
 	RootComponent = Mesh;
+
+	ConstructorHelpers::FObjectFinder<USoundBase> LaserSoundPath(TEXT("/Game/Sound/gunShot.gunShot"));
+	checkf(LaserSoundPath.Object != nullptr, TEXT("Sound not found."));
+	
+	LaserSound = UGameplayStatics::SpawnSoundAtLocation(this, LaserSoundPath.Object, FVector::ZeroVector);
+	// checkf(LaserSound != nullptr, TEXT("Sound not created.")); - crashes the editor! Sound not created in it.
+
+	// Immediately stop playing the shot, otherwise you hear it when the game start.
+	// This is not "proper", but the alternative is to copy-paste SpawnSoundAtLocation, minus the
+	// call to the play method.
+	if (LaserSound)
+		LaserSound->Stop();
+	
 }
 
 void ASpaceship::BeginPlay()
@@ -25,6 +42,8 @@ void ASpaceship::BeginPlay()
 
 	Mesh->BodyInstance.SetCollisionProfileName("OverlapAll");
 	Mesh->OnComponentBeginOverlap.AddDynamic(this, &ASpaceship::BeginOverlap);
+
+	LaserSound->SetVolumeMultiplier(1.0f);
 }
 
 void ASpaceship::Move(float AxisValue)
@@ -50,7 +69,10 @@ void ASpaceship::Shoot()
 		const FVector LaserStartLocation = Mesh->GetSocketLocation("LaserStartPoint");
 		GetWorld()->SpawnActor<ALaserBullet>(LaserStartLocation, GetActorRotation());
 		LastShotTime = CurrentTime;
-	}
+
+		checkf(LaserSound != nullptr, TEXT("Sound not created.")); // Has to be tested here, sounds only created in play, not in editor.
+		LaserSound->Play();
+	}	
 }
 
 void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Components/AudioComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 
@@ -25,6 +26,8 @@ private:
 
 	UPROPERTY()
 	UStaticMeshComponent* Mesh;
+
+	UAudioComponent* LaserSound;
 
 	void Move(float AxisValue);
 	void Shoot();

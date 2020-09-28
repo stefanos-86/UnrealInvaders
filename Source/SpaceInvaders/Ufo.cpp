@@ -39,11 +39,8 @@ void AUfo::Tick(float DeltaTime)
 
 	if (Location.Z > BattlefieldNearlimit)
 		Destroy();
-		// TODO: score points for the UFOs.
-		// Game mode -> points + 1?
-
-
-
+	
+	// TODO: score points for the UFOs.
 	// TODO: fire for the UFO.
 }
 
@@ -63,6 +60,8 @@ void AUfo::BeginOverlap(
 	// TODO Use a binding? So far, this is the only place where the score can change...
 	ASpaceInvadersHUD* Hud = Cast<ASpaceInvadersHUD>(GEngine->GetFirstLocalPlayerController(GetWorld())->GetHUD());
 	Hud->UpdateScore(GameMode->ScorePoint());
+
+	//Suonare il rumore dell'esplosione.
 
 	Destroy();
 

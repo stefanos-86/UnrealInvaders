@@ -1,38 +1,25 @@
 #include "Spaceship.h"
 
 #include "Blueprint/UserWidget.h"
-#include "ConstructorHelpers.h"
 #include "Engine/Engine.h"
 #include "GameFramework/PlayerController.h"
 #include "Math/UnrealMathUtility.h"
 #include "Sound/SoundBase.h"
 
-#include "Kismet/GameplayStatics.h"
-
 #include "Constants.h"
 #include "SpaceInvadersGameModeBase.h"
 #include "SpaceInvadersHUD.h"
 #include "LaserBullet.h"
-#include "MeshLoader.h"
+#include "Loader.h"
 
 ASpaceship::ASpaceship()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	Mesh = MeshLoader::LoadMesh(TEXT("/Game/Spaceships/Spaceship.Spaceship"), this);
+
+	Mesh = Loader::LoadMesh(TEXT("/Game/Spaceships/Spaceship.Spaceship"), this);
+	LaserSound = Loader::LoadSound(TEXT("/Game/Sound/gunShot.gunShot"), this);
+	
 	RootComponent = Mesh;
-
-	ConstructorHelpers::FObjectFinder<USoundBase> LaserSoundPath(TEXT("/Game/Sound/gunShot.gunShot"));
-	checkf(LaserSoundPath.Object != nullptr, TEXT("Sound not found."));
-	
-	LaserSound = UGameplayStatics::SpawnSoundAtLocation(this, LaserSoundPath.Object, FVector::ZeroVector);
-	// checkf(LaserSound != nullptr, TEXT("Sound not created.")); - crashes the editor! Sound not created in it.
-
-	// Immediately stop playing the shot, otherwise you hear it when the game start.
-	// This is not "proper", but the alternative is to copy-paste SpawnSoundAtLocation, minus the
-	// call to the play method.
-	if (LaserSound)
-		LaserSound->Stop();
-	
 }
 
 void ASpaceship::BeginPlay()

@@ -4,12 +4,12 @@
 #include "LaserBullet.h"
 
 #include "Constants.h"
-#include "MeshLoader.h"
+#include "Loader.h"
 
 ALaserBullet::ALaserBullet() 
 {
 	PrimaryActorTick.bCanEverTick = true;
-	RootComponent = MeshLoader::LoadMesh(TEXT("/Game/Spaceships/Beam.Beam"), this);
+	RootComponent = Loader::LoadMesh(TEXT("/Game/Spaceships/Beam.Beam"), this);
 }
 
 void ALaserBullet::Tick(float DeltaTime)

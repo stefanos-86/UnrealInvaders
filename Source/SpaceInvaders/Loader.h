@@ -4,16 +4,18 @@
 
 #include "UObject/Object.h"
 #include "CoreMinimal.h"
+#include "Components/AudioComponent.h"
 #include "Components/StaticMeshComponent.h"
 
-/** Common code among all the objects.
+/** Common code among many of the objects. Used to load data.
  * 
  */
 
 
 
-class SPACEINVADERS_API MeshLoader
+class SPACEINVADERS_API Loader
 {
 public:
 	static UStaticMeshComponent* LoadMesh(const TCHAR* MeshPath, UObject* Parent);
+	static UAudioComponent* LoadSound(const TCHAR* SoundPath, UObject* Parent);
 };

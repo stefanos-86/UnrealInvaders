@@ -4,14 +4,10 @@
 #include "Ufo.h"
 
 #include "Engine/Engine.h"
-
-#include "Kismet/GameplayStatics.h"
-
 #include "Sound/SoundBase.h"
 
 #include "Constants.h"
-#include "ConstructorHelpers.h"
-#include "MeshLoader.h"
+#include "Loader.h"
 #include "SpaceInvadersGameModeBase.h"
 #include "SpaceInvadersHUD.h"
 
@@ -19,23 +15,11 @@
 AUfo::AUfo()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	Mesh = MeshLoader::LoadMesh(TEXT("/Game/Spaceships/UFO.UFO"), this);
+	
+	Mesh = Loader::LoadMesh(TEXT("/Game/Spaceships/UFO.UFO"), this);
+	CrashSound = Loader::LoadSound(TEXT("/Game/Sound/impact.impact"), this);
+
 	RootComponent = Mesh;
-
-
-	// TODO: duplicated in spaceship
-	ConstructorHelpers::FObjectFinder<USoundBase> CrashSoundPath(TEXT("/Game/Sound/impact.impact"));
-	checkf(CrashSoundPath.Object != nullptr, TEXT("Sound not found."));
-
-	CrashSound = UGameplayStatics::SpawnSoundAtLocation(this, CrashSoundPath.Object, FVector::ZeroVector);
-	// checkf(LaserSound != nullptr, TEXT("Sound not created.")); - crashes the editor! Sound not created in it.
-
-	// Immediately stop playing the shot, otherwise you hear it when the game start.
-	// This is not "proper", but the alternative is to copy-paste SpawnSoundAtLocation, minus the
-	// call to the play method.
-	if (CrashSound)
-		CrashSound->Stop();
-
 }
 
 void AUfo::BeginPlay()

@@ -2,8 +2,10 @@
 
 #pragma once
 
+#include "Components/AudioComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+
 #include "Ufo.generated.h"
 
 UCLASS()
@@ -21,6 +23,8 @@ protected:
 private:
 	UPROPERTY()
 	UStaticMeshComponent* Mesh;
+
+	UAudioComponent* CrashSound;
 
 	UFUNCTION()
 	void BeginOverlap(

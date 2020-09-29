@@ -3,18 +3,39 @@
 
 #include "Ufo.h"
 
+#include "Engine/Engine.h"
+
+#include "Kismet/GameplayStatics.h"
+
+#include "Sound/SoundBase.h"
+
 #include "Constants.h"
+#include "ConstructorHelpers.h"
 #include "MeshLoader.h"
 #include "SpaceInvadersGameModeBase.h"
 #include "SpaceInvadersHUD.h"
 
-#include "Engine/Engine.h"
 
 AUfo::AUfo()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	Mesh = MeshLoader::LoadMesh(TEXT("/Game/Spaceships/UFO.UFO"), this);
 	RootComponent = Mesh;
+
+
+	// TODO: duplicated in spaceship
+	ConstructorHelpers::FObjectFinder<USoundBase> CrashSoundPath(TEXT("/Game/Sound/impact.impact"));
+	checkf(CrashSoundPath.Object != nullptr, TEXT("Sound not found."));
+
+	CrashSound = UGameplayStatics::SpawnSoundAtLocation(this, CrashSoundPath.Object, FVector::ZeroVector);
+	// checkf(LaserSound != nullptr, TEXT("Sound not created.")); - crashes the editor! Sound not created in it.
+
+	// Immediately stop playing the shot, otherwise you hear it when the game start.
+	// This is not "proper", but the alternative is to copy-paste SpawnSoundAtLocation, minus the
+	// call to the play method.
+	if (CrashSound)
+		CrashSound->Stop();
+
 }
 
 void AUfo::BeginPlay()
@@ -61,7 +82,8 @@ void AUfo::BeginOverlap(
 	ASpaceInvadersHUD* Hud = Cast<ASpaceInvadersHUD>(GEngine->GetFirstLocalPlayerController(GetWorld())->GetHUD());
 	Hud->UpdateScore(GameMode->ScorePoint());
 
-	//Suonare il rumore dell'esplosione.
+	checkf(CrashSound != nullptr, TEXT("Sound not created.")); // Has to be tested here, sounds only created in play, not in editor.
+	CrashSound->Play();
 
 	Destroy();
 

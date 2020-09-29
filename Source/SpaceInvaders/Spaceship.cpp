@@ -42,8 +42,6 @@ void ASpaceship::BeginPlay()
 
 	Mesh->BodyInstance.SetCollisionProfileName("OverlapAll");
 	Mesh->OnComponentBeginOverlap.AddDynamic(this, &ASpaceship::BeginOverlap);
-
-	LaserSound->SetVolumeMultiplier(1.0f);
 }
 
 void ASpaceship::Move(float AxisValue)

@@ -30,8 +30,11 @@ public:
 	uint8 LoseLife();
 
 	bool Dead() const;
+	bool Victory() const;
 
 private:
 	uint8 points;
 	uint8 lives;
+
+	uint8 pointsToWin;
 };

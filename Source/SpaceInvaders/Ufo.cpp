@@ -55,10 +55,19 @@ void AUfo::BeginOverlap(
 	bool bFromSweep,
 	const FHitResult& SweepResult) 
 {
-	GetHud()->UpdateScore(GetMode()->ScorePoint());
+	ASpaceInvadersHUD* Hud = GetHud();
+	ASpaceInvadersGameModeBase* GameMode = GetMode();
+	Hud->UpdateScore(GameMode->ScorePoint());
 
 	checkf(CrashSound != nullptr, TEXT("Sound not created.")); // Has to be tested here, sounds only created in play, not in editor.
 	CrashSound->Play();
+
+	if (GameMode->Victory()) {
+		APlayerController* Controller = GEngine->GetFirstLocalPlayerController(GetWorld());
+		Controller->Pause();
+		GameMode->PauseMenu->ToUiMode(Controller);
+		Hud->EndGameMessage(TEXT("You saved the universe!"));  // TODO: duplicated in spaceship. Refactor in game hud?
+	}
 
 	Destroy();
 }

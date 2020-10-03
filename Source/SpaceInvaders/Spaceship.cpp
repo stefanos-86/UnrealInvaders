@@ -106,14 +106,15 @@ void ASpaceship::BeginOverlap(
 	GEngine->AddOnScreenDebugMessage(1, 1, FColor::Red, TEXT("Spaceship overlap")); */
 
 	ASpaceInvadersHUD* Hud = Cast<ASpaceInvadersHUD>(GEngine->GetFirstLocalPlayerController(GetWorld())->GetHUD());
-	const uint8 lives = GetGameMode()->LoseLife();
-	Hud->UpdateLives(lives);
+	ASpaceInvadersGameModeBase* GameMode = GetGameMode();
 
-	if (GetGameMode()->Dead())
+	Hud->UpdateLives(GameMode->LoseLife());
+
+	if (GameMode->Dead())
 	{
 		APlayerController* Controller = GetController();
 		Controller->Pause();  
-		GetGameMode()->PauseMenu->ToUiMode(Controller);
+		GameMode->PauseMenu->ToUiMode(Controller);
 		Hud->EndGameMessage(TEXT("Game Over"));
 	}
 	

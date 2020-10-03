@@ -7,15 +7,16 @@
 #include "Spaceship.h"
 
 ASpaceInvadersGameModeBase::ASpaceInvadersGameModeBase() :
-	points(0), lives(3)
+	points(0), lives(3), pointsToWin(10)
 {
 	DefaultPawnClass = ASpaceship::StaticClass();
 	HUDClass = ASpaceInvadersHUD::StaticClass();
 }
 
 uint8 ASpaceInvadersGameModeBase::ScorePoint() {
+	checkf(points < pointsToWin, TEXT("Victory achieved, but game not stopped."));
+
 	points += 1;
-	// TODO: check overflow and terminate (give a "overwhelming victory" message?).
 	return points;
 }
 
@@ -29,6 +30,7 @@ uint8 ASpaceInvadersGameModeBase::LosePoint() {
 
 uint8 ASpaceInvadersGameModeBase::LoseLife() {
 	checkf(lives > 0, TEXT("0 lives but game not ended."));
+	
 	lives -= 1;
 	return lives;
 }
@@ -37,3 +39,6 @@ bool ASpaceInvadersGameModeBase::Dead() const {
 	return lives == 0;
 }
 
+bool ASpaceInvadersGameModeBase::Victory() const {
+	return points == pointsToWin;
+}

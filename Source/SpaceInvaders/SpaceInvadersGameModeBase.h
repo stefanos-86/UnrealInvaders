@@ -29,6 +29,8 @@ public:
 	uint8 LosePoint();
 	uint8 LoseLife();
 
+	bool Dead() const;
+
 private:
 	uint8 points;
 	uint8 lives;

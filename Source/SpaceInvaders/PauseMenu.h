@@ -17,4 +17,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Quit(APlayerController* Controller);
+
+	void ToUiMode(APlayerController* Controller);
+
+private:
+	void ToGameMode(APlayerController* Controller);
 };

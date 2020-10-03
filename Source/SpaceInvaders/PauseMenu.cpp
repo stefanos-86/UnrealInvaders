@@ -14,18 +14,12 @@ void UPauseMenu::TogglePause(APlayerController* Controller)
 	if (GetWorld()->IsPaused())
 	{
 		AddToViewport(); 
-		// The UI only mode blocks the keyboard input. 
-		//But the controller can still quit and pause with the keyboard.
-		FInputModeGameAndUI Mode; 
-		Controller->SetInputMode(Mode);
-		Controller->bShowMouseCursor = true;
+		ToUiMode(Controller);
 	}
 	else
 	{
 		RemoveFromParent();
-		FInputModeGameOnly GameMode;
-		Controller->SetInputMode(GameMode);
-		Controller->bShowMouseCursor = false;
+		ToGameMode(Controller);
 	}
 }
 
@@ -33,4 +27,20 @@ void UPauseMenu::Quit(APlayerController* Controller)
 {
 	// Console command??? The Internet says this is the way. Kismet does a similar thing.
 	Controller->ConsoleCommand("Quit");
+}
+
+void UPauseMenu::ToUiMode(APlayerController* Controller)
+{
+	// The UI only mode blocks the keyboard input. 
+	// But the controller can still quit and pause with the keyboard.
+	FInputModeGameAndUI UIMode;
+	Controller->SetInputMode(UIMode);
+	Controller->bShowMouseCursor = true;
+}
+
+void UPauseMenu::ToGameMode(APlayerController* Controller)
+{
+	FInputModeGameOnly GameMode;
+	Controller->SetInputMode(GameMode);
+	Controller->bShowMouseCursor = false;
 }

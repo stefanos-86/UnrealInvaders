@@ -28,8 +28,12 @@ uint8 ASpaceInvadersGameModeBase::LosePoint() {
 }
 
 uint8 ASpaceInvadersGameModeBase::LoseLife() {
+	checkf(lives > 0, TEXT("0 lives but game not ended."));
 	lives -= 1;
-	// TODO: check when 0 and terminate (give a "game over" message).
 	return lives;
+}
+
+bool ASpaceInvadersGameModeBase::Dead() const {
+	return lives == 0;
 }
 

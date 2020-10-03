@@ -34,9 +34,7 @@ void AUfo::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// TODO For now, simplified movement. Just advance. 
-	// make zig-zag patterns.
-	// It is a copy of the laser bullet, but it will "go away", it's just temporary code.
+	// Copy of the laser bullet movement, opposite direction. Should refactor is a single place.
 	const float Speed = 800;
 	const float Movement = Speed * DeltaTime;
 	FVector Location = GetActorLocation();

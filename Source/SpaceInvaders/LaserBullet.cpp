@@ -9,7 +9,17 @@
 ALaserBullet::ALaserBullet() 
 {
 	PrimaryActorTick.bCanEverTick = true;
-	RootComponent = Loader::LoadMesh(TEXT("/Game/Spaceships/Beam.Beam"), this);
+	Mesh = Loader::LoadMesh(TEXT("/Game/Spaceships/Beam.Beam"), this);
+	RootComponent = Mesh;
+}
+
+
+void ALaserBullet::BeginPlay()
+{
+	Super::BeginPlay();
+
+	Mesh->BodyInstance.SetCollisionProfileName("OverlapAll");
+	Mesh->OnComponentBeginOverlap.AddDynamic(this, &ALaserBullet::BeginOverlap);
 }
 
 void ALaserBullet::Tick(float DeltaTime)
@@ -25,5 +35,18 @@ void ALaserBullet::Tick(float DeltaTime)
 
 	if (Location.Z < BattlefieldFarlimit)
 		Destroy();
+}
+
+
+void ALaserBullet::BeginOverlap(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, TEXT("LASER overlap"));
+	Destroy();
 }
 

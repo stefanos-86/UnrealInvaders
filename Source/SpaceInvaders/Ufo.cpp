@@ -66,9 +66,6 @@ void AUfo::BeginOverlap(
 	CrashSound->Play();
 
 	Destroy();
-
-	// TODO: destroy laser bullet as well.
-
 }
 
 

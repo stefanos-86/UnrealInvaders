@@ -36,17 +36,16 @@ void AUfo::Tick(float DeltaTime)
 
 	// For now, simplified movement. Just advance. TODO: make zig-zag patterns.
 	// It is a copy of the laser bullet, but it will "go away", it's just temporary code.
-	const float Speed = 700;
+	const float Speed = 800;
 	const float Movement = Speed * DeltaTime;
 	FVector Location = GetActorLocation();
 	Location.Z += Movement;
 	SetActorLocation(Location);
 
-	if (Location.Z > BattlefieldNearlimit)
+	if (Location.Z > BattlefieldNearlimit) {
 		Destroy();
-	
-	// TODO: score points for the UFOs.
-	// TODO: fire for the UFO.
+		GetHud()->UpdateScore(GetMode()->LosePoint());
+	}
 }
 
 void AUfo::BeginOverlap(
@@ -60,11 +59,8 @@ void AUfo::BeginOverlap(
 
 	UE_LOG(LogTemp, Warning, TEXT("UFO overlap"));
 	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, TEXT("UFO overlap"));
-
-	ASpaceInvadersGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASpaceInvadersGameModeBase>();
-	// TODO Use a binding? So far, this is the only place where the score can change...
-	ASpaceInvadersHUD* Hud = Cast<ASpaceInvadersHUD>(GEngine->GetFirstLocalPlayerController(GetWorld())->GetHUD());
-	Hud->UpdateScore(GameMode->ScorePoint());
+	
+	GetHud()->UpdateScore(GetMode()->ScorePoint());
 
 	checkf(CrashSound != nullptr, TEXT("Sound not created.")); // Has to be tested here, sounds only created in play, not in editor.
 	CrashSound->Play();
@@ -73,4 +69,16 @@ void AUfo::BeginOverlap(
 
 	// TODO: destroy laser bullet as well.
 
+}
+
+
+
+ASpaceInvadersGameModeBase* AUfo::GetMode()
+{
+	return  GetWorld()->GetAuthGameMode<ASpaceInvadersGameModeBase>();
+}
+
+ASpaceInvadersHUD* AUfo::GetHud()
+{
+	return Cast<ASpaceInvadersHUD>(GEngine->GetFirstLocalPlayerController(GetWorld())->GetHUD());
 }

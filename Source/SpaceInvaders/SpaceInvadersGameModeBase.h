@@ -26,6 +26,7 @@ public:
 	UPauseMenu* PauseMenu;
 
 	uint8 ScorePoint();
+	uint8 LosePoint();
 	uint8 LoseLife();
 
 private:

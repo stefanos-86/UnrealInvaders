@@ -8,6 +8,9 @@
 
 #include "Ufo.generated.h"
 
+class ASpaceInvadersGameModeBase;
+class ASpaceInvadersHUD;
+
 UCLASS()
 class SPACEINVADERS_API AUfo : public AActor
 {
@@ -34,4 +37,7 @@ private:
 		int32 OtherBodyIndex,
 		bool bFromSweep,
 		const FHitResult& SweepResult);
+
+	ASpaceInvadersGameModeBase* GetMode();
+	ASpaceInvadersHUD* GetHud();
 };

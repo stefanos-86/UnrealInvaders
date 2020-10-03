@@ -19,6 +19,14 @@ uint8 ASpaceInvadersGameModeBase::ScorePoint() {
 	return points;
 }
 
+uint8 ASpaceInvadersGameModeBase::LosePoint() {
+	if (points > 0)
+		points-= 1;
+	// Let's be generous and don't allow epic defeats with negative points.
+
+	return points;
+}
+
 uint8 ASpaceInvadersGameModeBase::LoseLife() {
 	lives -= 1;
 	// TODO: check when 0 and terminate (give a "game over" message).

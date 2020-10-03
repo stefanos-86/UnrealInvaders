@@ -23,7 +23,7 @@ void ALaserBullet::Tick(float DeltaTime)
 	Location.Z -= Movement;  
 	SetActorLocation(Location);
 
-	if (Location.Z < BattlefieldFarlimit)  // TODO: there is a "Kill Z" option in the world settings. Investigate...
+	if (Location.Z < BattlefieldFarlimit)
 		Destroy();
 }
 

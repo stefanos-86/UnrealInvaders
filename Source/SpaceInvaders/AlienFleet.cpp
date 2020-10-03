@@ -18,7 +18,7 @@ void AAlienFleet::BeginPlay()
 	Super::BeginPlay();
 
 	// Fire out UFOs without pause!
-	const float TimeBetweenSpawning_seconds = 3;
+	const float TimeBetweenSpawning_seconds = 1;
 	const bool Repeat = true;
 
 	GetWorldTimerManager().SetTimer(

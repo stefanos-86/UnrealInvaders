@@ -4,15 +4,17 @@
 #include "Loader.h"
 
 #include "ConstructorHelpers.h"
+#include "Internationalization/Text.h"
 #include "Kismet/GameplayStatics.h"
 
 UStaticMeshComponent* Loader::LoadMesh(const TCHAR* MeshPath, UObject* Parent)
 {
 	UStaticMeshComponent* Mesh = Parent->CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
-	checkf(Mesh != nullptr, TEXT("Mesh not created."));  // TODO: concantenate the mesh path!
+
+	checkf(Mesh != nullptr, TEXT("Mesh not created."));
 
 	ConstructorHelpers::FObjectFinder<UStaticMesh> MeshPathObject(MeshPath);
-	checkf(MeshPathObject.Object != nullptr, TEXT("Mesh not found.")); // TODO: concantenate the mesh path!
+	checkf(MeshPathObject.Object != nullptr, TEXT("Mesh not found."));
 
 	Mesh->SetStaticMesh(MeshPathObject.Object);
 	
@@ -23,7 +25,7 @@ UAudioComponent* Loader::LoadSound(const TCHAR* SoundPath, UObject* Parent)
 {
 
 	ConstructorHelpers::FObjectFinder<USoundBase> SoundPathObject(SoundPath);
-	checkf(SoundPathObject.Object != nullptr, TEXT("Sound not found."));  // TODO: say what sound is not found.
+	checkf(SoundPathObject.Object != nullptr, TEXT("Sound not found."));
 
 	UAudioComponent* Sound = UGameplayStatics::SpawnSoundAtLocation(Parent, SoundPathObject.Object, FVector::ZeroVector);
 	

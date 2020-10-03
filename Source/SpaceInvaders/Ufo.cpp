@@ -34,7 +34,8 @@ void AUfo::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// For now, simplified movement. Just advance. TODO: make zig-zag patterns.
+	// TODO For now, simplified movement. Just advance. 
+	// make zig-zag patterns.
 	// It is a copy of the laser bullet, but it will "go away", it's just temporary code.
 	const float Speed = 800;
 	const float Movement = Speed * DeltaTime;
@@ -56,10 +57,6 @@ void AUfo::BeginOverlap(
 	bool bFromSweep,
 	const FHitResult& SweepResult) 
 {
-
-	UE_LOG(LogTemp, Warning, TEXT("UFO overlap"));
-	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, TEXT("UFO overlap"));
-	
 	GetHud()->UpdateScore(GetMode()->ScorePoint());
 
 	checkf(CrashSound != nullptr, TEXT("Sound not created.")); // Has to be tested here, sounds only created in play, not in editor.

@@ -33,7 +33,7 @@ void ASpaceship::BeginPlay()
 
 void ASpaceship::Move(float AxisValue)
 {
-	const float Speed = 5;  // TODO: made configurable so that user can "adapt" to own mouse.
+	const float Speed = 5;  // In real life, it would be configurable so that user can "adapt" to own mouse.
 
 	const float Movement = Speed * AxisValue;
 
@@ -65,11 +65,7 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("Move", this, &ASpaceship::Move);
-
-	// TODO: find a way to have continous fire without using the tick (e. g. timed callback
-	// every 0.5 seconds). Drumming on the left mouse button is uncomfortable.
 	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &ASpaceship::Shoot);
-
 
 	/* There should not be there, but I could not figure out how to have another class 
 	   taking input at the same time as this. */
@@ -105,8 +101,9 @@ void ASpaceship::BeginOverlap(
 	const FHitResult& SweepResult)
 {
 
+	/* Keep on hand as examples. 
 	UE_LOG(LogTemp, Warning, TEXT("Spaceship overlap"));
-	GEngine->AddOnScreenDebugMessage(1, 1, FColor::Red, TEXT("Spaceship overlap"));
+	GEngine->AddOnScreenDebugMessage(1, 1, FColor::Red, TEXT("Spaceship overlap")); */
 
 	ASpaceInvadersHUD* Hud = Cast<ASpaceInvadersHUD>(GEngine->GetFirstLocalPlayerController(GetWorld())->GetHUD());
 	Hud->UpdateLives(GetGameMode()->LoseLife());

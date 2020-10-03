@@ -5,10 +5,11 @@
 
 void UPauseMenu::TogglePause(APlayerController* Controller)
 {
-	Controller->Pause(); // Pause() works as a toggle. Call twice, it stops the pause.
-
-	// TODO: pointers can be null and crash if settings are not correct (e. g. default value not set in BP game 
+	// Pointers can be null and crash if settings are not correct (e. g. default value not set in BP game 
 	// mode or game mode not set in editor project parameters).
+	checkf(Controller != nullptr, TEXT("No player controller."));
+
+	Controller->Pause(); // Pause() works as a toggle. Call twice, it stops the pause.
 
 	if (GetWorld()->IsPaused())
 	{

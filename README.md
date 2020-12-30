@@ -26,11 +26,10 @@ Get to know the basics of the engine, then dive in its lessons. You will start t
 
 ## And the unit tests?
 This seems to be another dark spot in the Unreal world.
-
 The engine can do automated tests (here is [a very good tutorial](https://www.youtube.com/watch?v=f4LpDXjFgVQ)).
 
-I played around with the system a bit, it can be quickly adapted to run "unit tests" (you may need to code some assertions, but that is easy).
-But then I decided it was not worth it, this is such a basic project.
+I played around with the system a bit, it can be quickly adapted to run "unit tests" (you may need to code some assertions, but that is easy). But it is not as "agile" as the usual, dedicated, unit test frameworks.
+In the end I decided it was not worth it, this is such a basic project.
 
 
 ## Copyright!
